@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = CoinsViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List{
+            ForEach(viewModel.coins){ coin in
+                HStack{
+                    Text("\(coin.marketCapRank)")
+                        .foregroundStyle(.gray)
+                    VStack(alignment: .leading){
+                        Text(coin.name).fontWeight(.semibold)
+                        
+                        Text(coin.symbol)
+                    }
+                }.font(.footnote)
+            }
         }
-        .padding()
+        .overlay {
+            if let error = viewModel.errorMessage {
+                Text(error)
+            }
+        }
     }
 }
 
